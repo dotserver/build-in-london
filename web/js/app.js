@@ -298,7 +298,6 @@
       })
     );
     $("left").classList.toggle("dim", state.mode !== "score");
-    $("left-title").textContent = state.mode === "score" ? "Your priorities" : "Map key";
     $("reset").hidden = state.mode !== "score";
   }
 
@@ -353,7 +352,7 @@
             .map((f) => ({ id: P(f).id, name: P(f).name, meta: P(f).borough, score: P(f).score }));
     const top = list[0].score;
     el.innerHTML = `<span class="pill">Leaderboard</span>
-      <p class="sub" style="margin-top:8px">Ranked by your priorities. Click to fly there.</p>
+      <p class="sub" style="margin-top:8px">Ranked by the current weights. Click to fly there.</p>
       <div class="tabs" role="tablist">
         <button role="tab" data-t="boroughs" aria-selected="${state.lbTab === "boroughs"}">Boroughs</button>
         <button role="tab" data-t="msoas" aria-selected="${state.lbTab === "msoas"}">Neighbourhoods</button></div>

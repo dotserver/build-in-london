@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
-  <link rel="stylesheet" href="css/app.css?v=4">
+  <link rel="stylesheet" href="css/app.css?v=5">
 </head>
 <body>
   <div id="map" aria-label="3D map of London neighbourhoods"></div>
@@ -44,10 +44,11 @@
   <!-- ============================================================ LEFT PANEL -->
   <aside class="panel left" id="left">
     <div class="panel-head">
-      <span class="pill" id="left-title">Your priorities</span>
+      <span class="pill" id="left-title">Map key</span>
       <button class="ghost" id="reset" type="button">Reset</button>
     </div>
     <div class="legend-box" id="legend"></div>
+    <div class="weights-title">Adjust the weights</div>
     <p class="hint">Drag to re-weight the <b>FDI Opportunity Score</b>. Every neighbourhood re-ranks instantly.</p>
     <div id="sliders"></div>
   </aside>
@@ -75,6 +76,6 @@
   <div id="loading" class="loading">Building London…</div>
 
   <script src="https://unpkg.com/deck.gl@9.0.38/dist.min.js"></script>
-  <script src="js/app.js?v=4"></script>
+  <script src="js/app.js?v=6"></script>
 </body>
 </html>
