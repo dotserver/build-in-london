@@ -6,6 +6,8 @@ An interactive 3D map and analysis of how foreign direct investment (FDI), migra
 
 Built at House London (Newspeak House, 7 November 2026), a one-day data sprint on London's housing crisis.
 
+**Live app: https://build-in-london-web.vercel.app**  ·  Method & data: https://build-in-london-web.vercel.app/report
+
 ![Opportunity view: neighbourhoods ranked by FDI Opportunity Score](docs/app-opportunity.jpg)
 
 ---
@@ -69,7 +71,7 @@ Raw downloads for Section 3 go in `data/raw/` (git-ignored); the Section 3 scrip
 
 ### Deploy
 
-`vercel.json` serves the `web/` folder as a static site. Import the repo on [Vercel](https://vercel.com) with Framework Preset **Other** and no build settings.
+Deployed on [Vercel](https://vercel.com) with **Root Directory = `web`**, Framework Preset **Other** and no build settings (`web/vercel.json` enables clean URLs). Every push to `main` redeploys.
 
 ---
 
