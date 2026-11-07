@@ -298,6 +298,8 @@
       })
     );
     $("left").classList.toggle("dim", state.mode !== "score");
+    $("left-title").textContent = state.mode === "score" ? "Your priorities" : "Map key";
+    $("reset").hidden = state.mode !== "score";
   }
 
   // ------------------------------------------------------------------ right panel
