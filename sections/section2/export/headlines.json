@@ -1,0 +1,33 @@
+{
+  "primary": {
+    "text": "Inner London takes 86% of FDI projects and 56% of arrivals from abroad, but only 29% of approved new-home schemes",
+    "values": {
+      "inner_fdi_share_pct": 85.6,
+      "inner_arrivals_from_abroad_share_pct": 55.8,
+      "inner_new_home_approvals_share_pct": 28.8
+    }
+  },
+  "secondary": {
+    "text": "Inner London approves 7.0 new-home schemes per 1,000 new arrivals; outer London approves 20.8 (about 3x more)",
+    "values": {
+      "inner_schemes_per_1000_arrivals": 7.0,
+      "outer_schemes_per_1000_arrivals": 20.8
+    }
+  },
+  "supporting": [
+    "City of London had the highest arrivals from abroad: 64.4 per 1,000 residents",
+    "Inner West approves 80.1% of decided new-home schemes (highest), so the gap is fewer schemes coming forward, not more refusals",
+    "Canary Wharf cluster (5 Tower Hamlets wards): 22 new-home applications, 6 approved, 2021-25"
+  ],
+  "charts_for_web_app": [
+    "Grouped bar per sub-area: fdi_share_2024_25 (blue), share_of_london_arrivals_from_abroad (orange), share_of_london_new_home_approvals (green). Data: section2_areas.csv",
+    "Choropleth: boroughs shaded by arrived_from_abroad_per_1000 or new_homes_approved_per_1000_arrivals. Data: section2_boroughs.csv",
+    "Scatter: arrived_from_abroad_per_1000 (x) vs new_homes_approved_per_1000_arrivals (y), coloured by area_fdi_share_2024_25"
+  ],
+  "caveats": [
+    "Counts planning schemes, not individual homes (dwelling numbers are filled for under 1 in 10 schemes)",
+    "Council portals record applications differently, so rates are more reliable than raw counts",
+    "Migration is one year before Census 2021 (during COVID-19); planning is 2021-25",
+    "Housing-type figures come from words in descriptions, not official tenure data"
+  ]
+}

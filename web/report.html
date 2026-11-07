@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Build in London: method and data</title>
+  <meta name="description" content="Foreign investment, migration and housing demand in London: where investment sits, who it houses, and which deprived areas could take it next.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="css/style.css?v=3">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./">Build in London</a>
+      <nav class="nav" aria-label="Sections">
+        <a href="#s1">1 · Where it sits</a>
+        <a href="#s2">2 · FDI &amp; housing</a>
+        <a href="#s3">3 · What's missing</a>
+        <a href="#s4">4 · Redirecting FDI</a>
+        <a href="./" class="cta">Open the app →</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap">
+      <p class="eyebrow">Migration flows &amp; foreign direct investment</p>
+      <h1>Foreign investment piles up where London's housing demand is already highest.</h1>
+      <p class="lede">We map where foreign direct investment and deprivation sit, test whether investment hotspots are housing the people they attract, and identify deprived areas with the land and characteristics to take investment next.</p>
+    </section>
+
+    <!-- ===================================================== SECTION 1 -->
+    <section id="s1" class="section wrap">
+      <p class="section-num">Section 1</p>
+      <h2>Where investment and deprivation sit</h2>
+      <p class="lede" id="s1-lede">Loading…</p>
+
+      <div class="stats" id="s1-stats"></div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3>Where overseas investment goes vs where deprivation sits</h3>
+          <p class="note">Share of London's FDI projects (DBT, 2024-25) and of London's most deprived 20% of neighbourhoods (IMD 2025), by London sub-area.</p>
+        </div>
+        <div class="legend static" id="s1-bars-legend"></div>
+        <div id="s1-bars" class="chart"></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head">
+            <h3>Deprivation by borough</h3>
+            <p class="note">Share of each borough's neighbourhoods in London's most deprived 20%. Hover for the sub-area's FDI.</p>
+          </div>
+          <div class="legend static" id="s1-map-legend"></div>
+          <div id="s1-map" class="map map-sm" role="img" aria-label="Map of London boroughs shaded by deprivation"></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <h3>The concentration persists</h3>
+            <p class="note">Share of London's FDI projects by year.</p>
+          </div>
+          <div class="legend static" id="s1-trend-legend"></div>
+          <div id="s1-trend" class="chart"></div>
+        </div>
+      </div>
+
+      <details class="method">
+        <summary>Method, data and caveats</summary>
+        <ul>
+          <li>FDI: DBT Inward Investment Results 2025-26 (Tables 4.1, 4.12). Published only for London's five ITL2 sub-areas, so each borough carries its sub-area's figures.</li>
+          <li>Deprivation: MHCLG English Indices of Deprivation 2025. "Most deprived 20%" = the 998 most deprived of London's 4,994 neighbourhoods (London-relative ranking).</li>
+          <li>Suppressed DBT values ([c]) are left blank, never zero; 2024-25 is the only year all five sub-areas are published. Projects per 100 neighbourhoods approximates a per-head rate (~1,500 people each).</li>
+          <li>Counts single-site projects only. Association, not causation.</li>
+        </ul>
+      </details>
+    </section>
+
+    <!-- ===================================================== SECTION 2 -->
+    <section id="s2" class="section wrap">
+      <p class="section-num">Section 2</p>
+      <h2>Is FDI housing the people it attracts?</h2>
+      <p class="lede">Inner London takes 86% of FDI projects and 56% of migrants from abroad, but only 29% of approved new-home schemes. Outer London approves about 3× more new-home schemes per new migrant (20.8 vs 7.0 per 1,000). Inner West has the highest approval rate (80%), so the gap is fewer schemes coming forward, not more refusals. Canary Wharf cluster (5 Tower Hamlets wards): 6 of 22 new-home applications approved, 2021-25.</p>
+      <p><a href="./">Explore it in 3D in the app →</a></p>
+      <details class="method">
+        <summary>Method, data and caveats</summary>
+        <ul>
+          <li>Migration: ONS Census 2021 MIG001 (address one year before the census, during COVID-19). New migrants = from abroad + rest of UK (new to London).</li>
+          <li>Planning: London planning applications 2021-25 (foundations_london_housing dataset, 243,926 rows). New-home schemes (9,089) identified from descriptions, excluding follow-ups and householder extensions; development-corporation applications placed by coordinates.</li>
+          <li>Counts schemes, not homes (dwelling numbers are filled for under 1 in 10 schemes). Council portals record differently, so rates are more reliable than raw counts.</li>
+          <li>Housing-type figures come from words in descriptions, not official tenure data. Association, not causation.</li>
+        </ul>
+      </details>
+    </section>
+
+    <!-- ===================================================== SECTION 3 -->
+    <section id="s3" class="section wrap">
+      <p class="section-num">Section 3</p>
+      <h2>What deprived areas are missing, and what they already have</h2>
+      <p class="lede" id="s3-lede">Loading…</p>
+
+      <div class="stats" id="s3-stats"></div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3>London neighbourhoods by housing demand and deprivation</h3>
+          <p class="note" id="s3-map-note"></p>
+        </div>
+        <div class="legend" id="s3-legend" role="group" aria-label="Filter groups"></div>
+        <div id="s3-map" class="map" role="img" aria-label="Map of London MSOAs coloured by group"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3>Group profile: how each group compares with the London average</h3>
+          <p class="note">Each dot is a group's average, in standard deviations from the London neighbourhood average (0). Further right = more of that indicator.</p>
+        </div>
+        <div id="s3-profile" class="chart"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3>Shortlist: deprived, lower-demand neighbourhoods with the most brownfield capacity</h3>
+          <p class="note">Group C, ranked by maximum net homes on active brownfield register sites. Dwelling totals are lower bounds where sites lack an estimate.</p>
+        </div>
+        <div class="table-wrap"><table id="s3-candidates"></table></div>
+      </div>
+
+      <details class="method">
+        <summary>Method, data and caveats</summary>
+        <ul id="s3-method"></ul>
+      </details>
+    </section>
+
+    <!-- ===================================================== SECTION 4 -->
+    <section id="s4" class="section wrap">
+      <p class="section-num">Section 4</p>
+      <h2>How FDI could benefit these areas</h2>
+      <div class="placeholder">Coming soon: what effective FDI areas did, applied to the Section 3 shortlist, and the expected relief on migration-driven housing demand.</div>
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    <p>Built at House London, Newspeak House, 7 November 2026. Data: DBT Inward Investment Results 2025-26; ONS Census 2021 MIG001; London planning applications 2021-25; MHCLG English Indices of Deprivation 2025; MHCLG brownfield land registers (planning.data.gov.uk); ONS Open Geography.</p>
+  </footer>
+
+  <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="js/common.js?v=3"></script>
+  <script src="js/section1.js?v=3"></script>
+  <script src="js/section3.js?v=3"></script>
+</body>
+</html>

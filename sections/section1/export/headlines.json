@@ -1,0 +1,25 @@
+{
+  "primary": {
+    "text": "Inner West London gets 62% of London's FDI projects but holds only 11% of its most deprived neighbourhoods",
+    "values": {
+      "inner_west_fdi_share_pct": 62.1,
+      "inner_west_deprivation_share_pct": 10.7
+    }
+  },
+  "secondary": {
+    "text": "Inner West gets about 27x more FDI projects per head than Outer East & North East",
+    "values": {
+      "per_head_ratio": 26.8
+    }
+  },
+  "supporting": [
+    "Inner East holds 42.1% of London's most deprived neighbourhoods but gets 23.5% of FDI projects",
+    "Inner West's share of London FDI projects: 66% (2023-24), 62% (2024-25), 65% (2025-26)",
+    "Most deprived borough: Newham (50.3% of neighbourhoods in London's most deprived 20%)"
+  ],
+  "charts_for_web_app": [
+    "Grouped bar: per sub-area, fdi_share_2024_25 (blue) vs deprivation_share (red). Data: section1_areas.csv",
+    "Choropleth: boroughs shaded by dep_pct_london; tooltip adds area_fdi_share_2024_25. Data: section1_boroughs.csv",
+    "Line: inner_west_share vs inner_east_share by year. Data: section1_trend.csv"
+  ]
+}

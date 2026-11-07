@@ -1,0 +1,239 @@
+<title>London Investment Gap</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: header with thesis + mode switch, map as the main surface, a detail panel that slides in from the right (bottom sheet on phones). */
+:root{
+  --bg:#eef1f4; --surface:#ffffff; --fg:#17202b; --muted:#5b6673; --line:#d5dbe2;
+  --accent:#1f4fd1; --ramp0:#f3efe6; --dep:#b8321f; --fdi:#1f4fd1; --hou:#7a3db8;
+  --nodata:#cfd5dc; --stroke:#ffffff; --shadow:0 10px 30px rgba(23,32,43,.14);
+  --f-display:"Archivo",system-ui,sans-serif; --f-body:"Public Sans",system-ui,sans-serif; --f-num:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10151c; --surface:#18202a; --fg:#e8edf2; --muted:#9aa6b3; --line:#2b3542;
+  --accent:#7ea2ff; --ramp0:#26303c; --dep:#ff7a5c; --fdi:#6e98ff; --hou:#c08bff;
+  --nodata:#2f3945; --stroke:#10151c; --shadow:0 10px 30px rgba(0,0,0,.5); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10151c; --surface:#18202a; --fg:#e8edf2; --muted:#9aa6b3; --line:#2b3542;
+  --accent:#7ea2ff; --ramp0:#26303c; --dep:#ff7a5c; --fdi:#6e98ff; --hou:#c08bff;
+  --nodata:#2f3945; --stroke:#10151c; --shadow:0 10px 30px rgba(0,0,0,.5); color-scheme:dark}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font:15px/1.5 var(--f-body);display:flex;flex-direction:column}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{padding-block:18px 10px;display:grid;gap:12px}
+h1{font:800 clamp(22px,3vw,32px)/1.1 var(--f-display);letter-spacing:-.01em;margin:0;text-wrap:balance}
+.lede{margin:0;color:var(--muted);max-width:68ch}
+.row{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between}
+.stats{display:flex;flex-wrap:wrap;gap:8px 22px}
+.stat{display:flex;align-items:baseline;gap:8px}
+.stat b{font:500 20px var(--f-num)} .stat span{color:var(--muted);font-size:13px}
+.modes{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px}
+.modes button{font:600 13px var(--f-body);color:var(--muted);background:none;border:0;border-radius:999px;padding:6px 12px;cursor:pointer}
+.modes button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+button:focus-visible,path:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{flex:1;min-height:0;display:flex;gap:16px;padding-block:6px 16px;position:relative}
+.mapbox{flex:1;min-width:0;min-height:320px;position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+svg{width:100%;height:100%;display:block}
+path.b{stroke:var(--stroke);stroke-width:1.2;cursor:pointer;transition:fill .35s,opacity .2s}
+path.b:hover{stroke:var(--fg);stroke-width:2}
+path.b.sel{stroke:var(--fg);stroke-width:3}
+.dim path.b:not(.same){opacity:.45}
+.legend{position:absolute;left:14px;bottom:12px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:12px;display:grid;gap:4px;max-width:calc(100% - 28px)}
+.legend .bar{height:10px;width:200px;max-width:100%;border-radius:3px}
+.legend .ends{display:flex;justify-content:space-between;color:var(--muted);font-family:var(--f-num)}
+.hint{position:absolute;right:12px;top:10px;font-size:12px;color:var(--muted)}
+.tip{position:fixed;pointer-events:none;z-index:20;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);padding:10px 12px;width:240px;font-size:13px}
+.tip h3{margin:0 0 6px;font:700 15px var(--f-display)}
+.tip .kv{display:flex;justify-content:space-between;gap:10px;padding:2px 0}
+.tip .kv b{font:500 14px var(--f-num)}
+.tip .k1{color:var(--dep)} .tip .k2{color:var(--fdi)}
+.tip small{display:block;color:var(--muted);margin-top:4px;line-height:1.35}
+aside{width:380px;flex:none;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:auto;padding:18px;display:grid;gap:16px;align-content:start}
+aside .x{justify-self:end;font:600 13px var(--f-body);background:none;border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:4px 10px;cursor:pointer}
+aside h2{margin:0;font:800 24px/1.1 var(--f-display)}
+.chip{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--bg);border:1px solid var(--line);color:var(--muted)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.big{border:1px solid var(--line);border-radius:10px;padding:10px}
+.big b{display:block;font:500 26px var(--f-num)}
+.big span{font-size:12px;color:var(--muted);line-height:1.3;display:block}
+.big.d b{color:var(--dep)} .big.f b{color:var(--fdi)}
+h4{margin:0 0 6px;font:700 12px var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ranks{display:grid;gap:5px}
+.rk{display:grid;grid-template-columns:138px 1fr 36px;gap:8px;align-items:center;font-size:13px}
+.rk .t{height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
+.rk .t i{display:block;height:100%;background:var(--dep);border-radius:4px}
+.rk em{font:500 12px var(--f-num);font-style:normal;text-align:right;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+td,th{padding:4px 0;border-bottom:1px solid var(--line);text-align:right}
+td:first-child,th:first-child{text-align:left;color:var(--muted);font-weight:500}
+th{font-size:12px;color:var(--muted);font-weight:600}
+.note{font-size:12px;color:var(--muted);line-height:1.45;margin:0}
+.empty{color:var(--muted)}
+.empty h2{color:var(--fg);margin-bottom:8px}
+.alist{display:grid;gap:6px}
+.arow{display:grid;grid-template-columns:110px 1fr;gap:8px;align-items:center;font-size:12px}
+.arow .bars{display:grid;gap:2px}
+.arow .bars i{display:block;height:7px;border-radius:3px}
+footer{padding-block:0 14px;font-size:11.5px;color:var(--muted)}
+@media (max-width:820px){
+  body{height:auto} main{flex-direction:column} .mapbox{height:62vh;flex:none}
+  aside{width:auto} .hint{display:none}
+}
+@media (prefers-reduced-motion:reduce){path.b{transition:none}}
+</style>
+
+<header class="wrap">
+  <h1>Is overseas investment reaching the London that needs it?</h1>
+  <p class="lede">Each borough is shaded by how much of it falls in London's most deprived 20% of neighbourhoods. Hover for the headline numbers, click for the full profile.</p>
+  <div class="row">
+    <div class="stats">
+      <div class="stat"><b>62%</b><span>of London FDI projects go to Inner West</span></div>
+      <div class="stat"><b>11%</b><span>of London's most deprived areas are there</span></div>
+      <div class="stat"><b>27×</b><span>more projects per head than Outer East &amp; NE</span></div>
+    </div>
+    <div class="modes" role="group" aria-label="Shade the map by">
+      <button id="m-dep" data-mode="dep" aria-pressed="true">Deprivation</button>
+      <button id="m-fdi" data-mode="fdi" aria-pressed="false">Investment</button>
+      <button id="m-hou" data-mode="hou" aria-pressed="false">Housing pressure</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="mapbox" id="mapbox">
+    <svg id="map" role="img" aria-label="Map of London's 33 boroughs"></svg>
+    <div class="hint">Click a borough for details</div>
+    <div class="legend" id="legend"></div>
+  </div>
+  <aside id="panel" aria-live="polite"></aside>
+</main>
+<footer class="wrap">Sources: MHCLG English Indices of Deprivation 2025; DBT Inward Investment Results 2025-26 (Table 4.12, single-site projects). FDI is published only for London's five ITL2 sub-areas, so each borough shows its sub-area's investment figure. Boundaries: ONS via UK-GeoJSON, Open Government Licence; contains OS data © Crown copyright and database right. Shows where investment and deprivation sit, not cause and effect.</footer>
+<div class="tip" id="tip" hidden></div>
+
+<script>
+const DATA = __DATA__;
+const $ = s => document.querySelector(s);
+const svg = $('#map'), tip = $('#tip'), panel = $('#panel');
+const NS = 'http://www.w3.org/2000/svg';
+const byCode = Object.fromEntries(DATA.boroughs.map(b => [b.code, b]));
+const A = DATA.areas;
+const maxDep = Math.max(...DATA.boroughs.map(b => b.depPct));
+const maxFdi = Math.max(...Object.values(A).map(a => a.fdiShare));
+const fmt = n => n == null ? 'n/a' : n.toLocaleString('en-GB');
+let mode = 'dep', sel = null;
+
+svg.setAttribute('viewBox', `-10 -10 ${DATA.w + 20} ${DATA.h + 20}`);
+svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+const g = document.createElementNS(NS, 'g'); svg.appendChild(g);
+const paths = {};
+for (const b of DATA.boroughs) {
+  const p = document.createElementNS(NS, 'path');
+  p.setAttribute('d', DATA.paths[b.code]); p.setAttribute('class', 'b');
+  p.setAttribute('tabindex', '0'); p.setAttribute('role', 'button');
+  p.setAttribute('aria-label', `${b.name}: ${b.depPct}% in London's most deprived 20%`);
+  p.addEventListener('mousemove', e => showTip(b, e));
+  p.addEventListener('mouseleave', () => tip.hidden = true);
+  p.addEventListener('click', () => select(b.code));
+  p.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(b.code); } });
+  g.appendChild(p); paths[b.code] = p;
+}
+
+function value(b) {
+  if (mode === 'dep') return b.depPct / maxDep;
+  if (mode === 'fdi') return A[b.area].fdiShare / maxFdi;
+  return (34 - b.lon.housing) / 33;
+}
+const hue = () => ({ dep: '--dep', fdi: '--fdi', hou: '--hou' }[mode]);
+function paint() {
+  for (const b of DATA.boroughs) {
+    const t = Math.max(0.06, Math.pow(value(b), mode === 'fdi' ? 0.55 : 1));
+    paths[b.code].style.fill = `color-mix(in oklab, var(${hue()}) ${Math.round(t * 100)}%, var(--ramp0))`;
+  }
+  const L = {
+    dep: ['% of borough in London\'s most deprived 20%', '0%', maxDep.toFixed(0) + '%'],
+    fdi: ['Sub-area share of London FDI projects, 2024-25', '3%', maxFdi.toFixed(0) + '%'],
+    hou: ['Housing & services barriers (London rank)', 'least', 'most'] }[mode];
+  $('#legend').innerHTML = `<div>${L[0]}</div><div class="bar" style="background:linear-gradient(90deg,var(--ramp0),var(${hue()}))"></div><div class="ends"><span>${L[1]}</span><span>${L[2]}</span></div>`;
+}
+
+function showTip(b, e) {
+  const a = A[b.area];
+  tip.innerHTML = `<h3>${b.name}</h3>
+    <div class="kv"><span>Deprivation</span><b class="k1">${b.depPct}%</b></div>
+    <div class="kv"><span>Investment (${a.short})</span><b class="k2">${a.fdiShare}%</b></div>
+    <small>${b.depPct}% of its neighbourhoods are in London's most deprived 20%. Its sub-area gets ${a.fdiShare}% of London's FDI projects.</small>`;
+  tip.hidden = false;
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = e.clientX + 14, y = e.clientY + 14;
+  if (x + w > innerWidth - 8) x = e.clientX - w - 14;
+  if (y + h > innerHeight - 8) y = e.clientY - h - 14;
+  tip.style.left = x + 'px'; tip.style.top = y + 'px';
+}
+
+const RANKS = [['overall','Overall'],['income','Income'],['employment','Employment'],['education','Education & skills'],['health','Health'],['crime','Crime'],['housing','Housing & services'],['environment','Living environment'],['children','Child poverty'],['older','Older people poverty']];
+
+function select(code) {
+  sel = code; tip.hidden = true;
+  for (const c in paths) paths[c].classList.toggle('sel', c === code);
+  const b = byCode[code], a = A[b.area], iw = A.TLI3;
+  for (const c in paths) paths[c].classList.toggle('same', byCode[c].area === b.area);
+  $('#mapbox').classList.add('dim');
+  const yrs = ['2023-24', '2024-25', '2025-26'];
+  panel.innerHTML = `
+    <button class="x" id="close">Close</button>
+    <div><h2>${b.name}</h2><span class="chip">${a.name}</span></div>
+    <div class="pair">
+      <div class="big d"><b>${b.depPct}%</b><span>of neighbourhoods in London's most deprived 20%</span></div>
+      <div class="big f"><b>${a.fdiShare}%</b><span>of London FDI projects go to ${a.short} (2024-25)</span></div>
+    </div>
+    <section><h4>Deprivation</h4>
+      <table>
+        <tr><td>Neighbourhoods (LSOAs)</td><td>${b.n}</td></tr>
+        <tr><td>In London's most deprived 20%</td><td>${b.lw20} (${b.depPct}%)</td></tr>
+        <tr><td>In England's most deprived 20%</td><td>${b.e20} (${b.engPct}%)</td></tr>
+        <tr><td>Overall rank in London</td><td>${b.lon.overall} of 33</td></tr>
+        <tr><td>Overall rank in England</td><td>${b.eng.overall} of 296</td></tr>
+      </table></section>
+    <section><h4>London rank by type (1 = most deprived of 33)</h4>
+      <div class="ranks">${RANKS.slice(1).map(([k, l]) => `<div class="rk"><span>${l}</span><div class="t"><i style="width:${((34 - b.lon[k]) / 33 * 100).toFixed(0)}%"></i></div><em>${b.lon[k]}</em></div>`).join('')}</div></section>
+    <section><h4>Investment in ${a.short}</h4>
+      <table><tr><th></th>${yrs.map(y => `<th>${y}</th>`).join('')}</tr>
+        <tr><td>FDI projects</td>${a.p.map(v => `<td>${fmt(v)}</td>`).join('')}</tr>
+        <tr><td>New FDI jobs</td>${a.j.map(v => `<td>${fmt(v)}</td>`).join('')}</tr></table>
+      <table style="margin-top:8px">
+        <tr><td>Share of London projects (2024-25)</td><td>${a.fdiShare}%</td></tr>
+        <tr><td>Share of London new FDI jobs</td><td>${a.jobShare}%</td></tr>
+        <tr><td>Projects per 100 neighbourhoods</td><td>${a.per100}</td></tr>
+        <tr><td>Share of London's most deprived areas</td><td>${a.depShare}%</td></tr>
+        ${b.area !== 'TLI3' ? `<tr><td>Inner West gets per head</td><td>${(iw.per100 / a.per100).toFixed(1)}× more</td></tr>` : ''}
+      </table>
+      <p class="note" style="margin-top:6px">n/a = withheld by DBT as disclosive. Other boroughs in this sub-area: ${a.boroughs.filter(n => n !== b.name).join(', ')}.</p></section>`;
+  $('#close').onclick = clearSel;
+  if (innerWidth <= 820) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function clearSel() {
+  sel = null; $('#mapbox').classList.remove('dim');
+  for (const c in paths) paths[c].classList.remove('sel', 'same');
+  overview();
+}
+
+function overview() {
+  const order = ['TLI3', 'TLI4', 'TLI5', 'TLI7', 'TLI6'];
+  panel.innerHTML = `<div class="empty"><h2>London at a glance</h2><p class="note">Pick a borough on the map to see its full profile. Below, each sub-area's share of London's FDI projects (blue) against its share of London's most deprived neighbourhoods (red).</p></div>
+    <div class="alist">${order.map(k => { const a = A[k]; return `<div class="arow"><span>${a.short}</span><div class="bars"><i style="width:${a.fdiShare / 65 * 100}%;background:var(--fdi)" title="FDI ${a.fdiShare}%"></i><i style="width:${a.depShare / 65 * 100}%;background:var(--dep)" title="Deprivation ${a.depShare}%"></i></div></div>`; }).join('')}</div>
+    <table><tr><th>Sub-area</th><th>FDI share</th><th>Deprived share</th><th>Per 100 LSOAs</th></tr>
+    ${order.map(k => { const a = A[k]; return `<tr><td>${a.short}</td><td>${a.fdiShare}%</td><td>${a.depShare}%</td><td>${a.per100}</td></tr>`; }).join('')}</table>
+    <p class="note">Most deprived borough: ${[...DATA.boroughs].sort((x, y) => y.depPct - x.depPct)[0].name}. Least: ${[...DATA.boroughs].sort((x, y) => x.depPct - y.depPct)[0].name}.</p>`;
+}
+
+document.querySelectorAll('.modes button').forEach(btn => btn.addEventListener('click', () => {
+  mode = btn.dataset.mode;
+  document.querySelectorAll('.modes button').forEach(x => x.setAttribute('aria-pressed', x === btn));
+  paint();
+}));
+addEventListener('keydown', e => { if (e.key === 'Escape' && sel) clearSel(); });
+paint(); overview();
+</script>

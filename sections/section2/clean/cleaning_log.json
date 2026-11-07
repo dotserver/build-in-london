@@ -1,0 +1,9 @@
+{
+  "rows_raw": 243926,
+  "dev_corp_rows_placed_by_coordinates": 564,
+  "rows_dropped_pre_2021": 146,
+  "duplicate_rows_removed": 2,
+  "n_dwellings_coverage_new_homes": 0.089,
+  "rows_clean": 243775,
+  "new_home_applications": 9089
+}

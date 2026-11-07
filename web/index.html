@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Build in London</title>
+  <meta name="description" content="Where should London's next foreign investment go? An interactive 3D map of FDI, migration, deprivation, housing demand and brownfield land.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/app.css?v=3">
+</head>
+<body>
+  <div id="map" aria-label="3D map of London neighbourhoods"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <!-- ============================================================ TOP BAR -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true"></span>
+      <div>
+        <div class="brand-name">Build in London</div>
+        <div class="brand-sub">Investment · Migration · Housing</div>
+      </div>
+    </div>
+    <div class="top-center">
+      <h1 id="title">Where should London's next foreign investment go?</h1>
+      <div class="controls">
+        <div class="seg" role="tablist" aria-label="View">
+          <button role="tab" data-mode="fdi">Where FDI goes</button>
+          <button role="tab" data-mode="housing">Housing &amp; migrants</button>
+          <button role="tab" data-mode="groups">What's missing</button>
+          <button role="tab" data-mode="score" aria-selected="true">Opportunity</button>
+        </div>
+        <div class="search">
+          <input id="search" type="search" list="places" placeholder="Search a borough or neighbourhood…" autocomplete="off">
+          <datalist id="places"></datalist>
+        </div>
+      </div>
+    </div>
+    <a class="report-link" href="report.html">Method &amp; data →</a>
+  </header>
+
+  <!-- ============================================================ LEFT PANEL -->
+  <aside class="panel left" id="left">
+    <div class="panel-head">
+      <span class="pill">Your priorities</span>
+      <button class="ghost" id="reset" type="button">Reset</button>
+    </div>
+    <div class="legend-box" id="legend"></div>
+    <p class="hint">Drag to re-weight the <b>FDI Opportunity Score</b>. Every neighbourhood re-ranks instantly.</p>
+    <div id="sliders"></div>
+  </aside>
+
+  <!-- ============================================================ RIGHT PANEL -->
+  <aside class="panel right" id="right">
+    <div id="right-content"></div>
+  </aside>
+
+  <!-- ============================================================ DETAIL CARD -->
+  <div class="detail" id="detail" hidden></div>
+
+  <!-- ============================================================ STORY TOUR -->
+  <footer class="tour" id="tour">
+    <button class="tour-btn" id="tour-prev" type="button" aria-label="Previous step">‹</button>
+    <div class="tour-body">
+      <div class="tour-steps" id="tour-steps"></div>
+      <div class="tour-title" id="tour-title"></div>
+      <div class="tour-text" id="tour-text"></div>
+    </div>
+    <button class="tour-btn primary" id="tour-next" type="button" aria-label="Next step">›</button>
+  </footer>
+
+  <div id="tip" class="tip" hidden></div>
+  <div id="loading" class="loading">Building London…</div>
+
+  <script src="https://unpkg.com/deck.gl@9.0.38/dist.min.js"></script>
+  <script src="js/app.js?v=3"></script>
+</body>
+</html>
