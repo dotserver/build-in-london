@@ -1,0 +1,31 @@
+[project]
+name = "house-london-hackathon"
+version = "0.1.0"
+description = "House London! #3 data hackathon: London housing & planning analysis"
+readme = "README.md"
+authors = [
+    { name = "Dotserver", email = "goluwatobisodiq@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "duckdb>=2.0.0",
+    "folium>=0.20.0",
+    "geopandas>=1.2.0",
+    "ipykernel>=7.4.0",
+    "jupyter>=1.1.1",
+    "matplotlib>=3.11.2",
+    "openpyxl>=3.1.5",
+    "pandas>=3.1.1",
+    "plotly>=7.1.0",
+    "pyarrow>=26.0.1",
+    "requests>=2.34.2",
+    "scikit-learn>=1.9.1",
+    "seaborn>=0.13.2",
+    "shapely>=2.2.0",
+    "statsmodels>=0.15.0",
+    "streamlit>=1.67.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.13.7,<0.14.0"]
+build-backend = "uv_build"

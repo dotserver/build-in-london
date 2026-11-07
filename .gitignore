@@ -1,0 +1,19 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Data (raw downloads can be large; commit only small processed files deliberately)
+data/raw/*
+!data/raw/.gitkeep
+
+# Notebooks / OS / env
+.ipynb_checkpoints/
+.DS_Store
+.env
